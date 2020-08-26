@@ -95,17 +95,19 @@ class CounterView(context: Context, attrs: AttributeSet): RelativeLayout(context
             dataSet.add(i.toString())
         }
 
-        val adapter = NumberAdapter(dataSet)
+        val textSize = (height/10).toFloat()
+        val adapter = NumberAdapter(dataSet, textSize)
         recyclerView.adapter = adapter
     }
 
-    private class NumberAdapter(var dataSet: List<String>): RecyclerView.Adapter<NumberAdapter.NumberViewHolder>() {
+    private class NumberAdapter(var dataSet: List<String>, val textSize: Float): RecyclerView.Adapter<NumberAdapter.NumberViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberViewHolder {
             val itemView = LayoutInflater.from(parent.context).inflate(
                 R.layout.cell_number,
                 parent,
                 false
             ) as ViewGroup
+            itemView.numberLabel.textSize = textSize
             return NumberViewHolder(itemView)
         }
 
