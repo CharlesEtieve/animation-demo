@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.zenly.mydemoapplication.R
 import kotlinx.android.synthetic.main.activity_gradient.*
 
@@ -16,8 +15,7 @@ class GradientActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gradient)
-        val drawable = ContextCompat.getDrawable(this, R.drawable.gradient)
-        imageView.setImageDrawable(drawable)
+        display(0f)
         slider.addOnChangeListener { _, value, _ ->
             display(value)
         }
@@ -26,6 +24,8 @@ class GradientActivity: AppCompatActivity() {
     private fun display(value: Float) {
         val newStart = evaluator.evaluate(value, Color.RED, Color.GREEN) as Int
         val newEnd = evaluator.evaluate(value, Color.BLUE, Color.YELLOW) as Int
-        (imageView.drawable as? GradientDrawable)?.colors = intArrayOf(newStart, newEnd)
+        val drawable = GradientDrawable()
+        drawable.colors = intArrayOf(newStart, newEnd)
+        imageView.setImageDrawable(drawable)
     }
 }
