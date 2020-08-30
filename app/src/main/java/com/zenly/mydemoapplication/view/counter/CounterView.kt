@@ -12,11 +12,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SimpleOnItemTouchListener
+import com.jakewharton.rxbinding2.view.RxView
 import com.zenly.mydemoapplication.R
+import hu.akarnokd.rxjava3.bridge.RxJavaBridge
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.android.synthetic.main.cell_number.view.*
+import kotlinx.android.synthetic.main.edit_text_counter.view.*
+import java.util.concurrent.TimeUnit
 
 
 class CounterView(context: Context, attrs: AttributeSet): RelativeLayout(context, attrs) {
@@ -25,8 +32,9 @@ class CounterView(context: Context, attrs: AttributeSet): RelativeLayout(context
     private val recyclerView = RecyclerView(context)
     private val defaultSpeed = 3000000
     private var state = State.ASK_NUMBER
+    private val bag = CompositeDisposable()
 
-    enum class State {
+    private enum class State {
         ASK_NUMBER,
         ROLL
     }
@@ -35,18 +43,6 @@ class CounterView(context: Context, attrs: AttributeSet): RelativeLayout(context
         //initialize button
         button.id = android.R.id.button1
         button.text = resources.getString(R.string.set_number)
-        button.setOnClickListener {
-            when(state) {
-                State.ASK_NUMBER -> {
-                    askNumber()
-                }
-                State.ROLL -> {
-                    recyclerView.fling(0, defaultSpeed)
-                    state = State.ASK_NUMBER
-                    button.text = resources.getString(R.string.reset)
-                }
-            }
-        }
 
         //initialize recyclerview
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -71,19 +67,46 @@ class CounterView(context: Context, attrs: AttributeSet): RelativeLayout(context
         addView(recyclerView, params2)
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        RxView
+            .clicks(button)
+            .throttleFirst(1000, TimeUnit.MILLISECONDS)
+            .to { RxJavaBridge.toV3Observable(it) }
+            .subscribe {
+                handleButtonClicked()
+            }
+            .addTo(bag)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        bag.clear()
+    }
+
+    private fun handleButtonClicked() {
+        when(state) {
+            State.ASK_NUMBER -> {
+                askNumber()
+            }
+            State.ROLL -> {
+                state = State.ASK_NUMBER
+                button.text = resources.getString(R.string.reset)
+                recyclerView.fling(0, defaultSpeed)
+            }
+        }
+    }
+
     private fun askNumber() {
-        val input = EditText(context)
-        input.inputType = InputType.TYPE_CLASS_NUMBER
-        val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-        input.layoutParams = lp
+        val layout = LayoutInflater.from(context).inflate(R.layout.edit_text_counter, null) as LinearLayout
         AlertDialog.Builder(context)
             .setMessage(R.string.counter_popup_message)
-            .setView(input)
+            .setView(layout)
             .setPositiveButton(android.R.string.ok) { _, _ ->
-                input.text.toString().toIntOrNull()?.let { value ->
-                    initializeAdapter(value)
+                layout.editTextCounterPopup.text.toString().toIntOrNull()?.let { value ->
                     state = State.ROLL
                     button.text = resources.getString(R.string.roll)
+                    initializeAdapter(value)
                 }
             }
             .show()
@@ -94,7 +117,6 @@ class CounterView(context: Context, attrs: AttributeSet): RelativeLayout(context
         for (i in number..number+12) {
             dataSet.add(i.toString())
         }
-
         val textSize = (height/10).toFloat()
         val adapter = NumberAdapter(dataSet, textSize)
         recyclerView.adapter = adapter

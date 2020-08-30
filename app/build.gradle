@@ -8,10 +8,12 @@ android {
 
     defaultConfig {
         applicationId "com.zenly.mydemoapplication"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,6 +23,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -35,5 +42,27 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
     implementation 'com.google.android.material:material:1.2.0'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
+
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    implementation "io.reactivex.rxjava3:rxkotlin:3.0.0"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    // (see https://github.com/ReactiveX/RxJava/releases for latest 3.x.x version)
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
+
+    implementation "com.github.akarnokd:rxjava3-bridge:3.0.0"
+    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0'
+    //implementation 'com.jakewharton.rxbinding4:rxbinding-drawerlayout:4.0.0'
+    //implementation 'com.jakewharton.rxbinding4:rxbinding-leanback:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-recyclerview:4.0.0'
+    //implementation 'com.jakewharton.rxbinding4:rxbinding-slidingpanelayout:4.0.0'
+    //implementation 'com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:4.0.0'
+    //implementation 'com.jakewharton.rxbinding4:rxbinding-viewpager:4.0.0'
+    //implementation 'com.jakewharton.rxbinding4:rxbinding-viewpager2:4.0.0'
 
 }
