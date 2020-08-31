@@ -4,11 +4,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SimpleOnItemTouchListener
 import com.jakewharton.rxbinding2.view.RxView
 import com.zenly.mydemoapplication.R
 import hu.akarnokd.rxjava3.bridge.RxJavaBridge
@@ -37,13 +35,6 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
         val a = context.obtainStyledAttributes(attrs, R.styleable.CounterView)
         rollSize = a.getInt(R.styleable.CounterView_rollSize, DEFAULT_ROLL_SIZE)
         a.recycle()
-
-        //remove the manual scroll of the recyclerview
-        counterRecyclerview.addOnItemTouchListener(object : SimpleOnItemTouchListener() {
-            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                return true
-            }
-        })
     }
 
     override fun onAttachedToWindow() {

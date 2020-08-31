@@ -16,6 +16,16 @@
         app:layoutManager="LinearLayoutManager"
         android:overScrollMode="never" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/counterRecyclerview"
+        app:layout_constraintBottom_toBottomOf="@id/counterRecyclerview"
+        app:layout_constraintEnd_toEndOf="@id/counterRecyclerview"
+        app:layout_constraintStart_toStartOf="@id/counterRecyclerview"
+        android:clickable="true"
+        android:focusable="true" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/counterButton"
         android:layout_width="match_parent"
