@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SimpleOnItemTouchListener
 import com.jakewharton.rxbinding2.view.RxView
 import com.zenly.mydemoapplication.R
+import com.zenly.mydemoapplication.util.toPx
 import hu.akarnokd.rxjava3.bridge.RxJavaBridge
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -56,8 +57,9 @@ class CounterView(context: Context, attrs: AttributeSet): RelativeLayout(context
         })
 
         //place button
-        val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        val params = LayoutParams(LayoutParams.MATCH_PARENT, resources.getDimensionPixelSize(R.dimen.button_height))
         params.addRule(ALIGN_PARENT_BOTTOM)
+        params.setMargins(resources.getDimensionPixelSize(R.dimen.horizontal_margin), 0, resources.getDimensionPixelSize(R.dimen.horizontal_margin), 15f.toPx(context))
         addView(button, params)
 
         //place recyclerview

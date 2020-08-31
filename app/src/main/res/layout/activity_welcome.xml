@@ -7,8 +7,10 @@
 
     <Button
         android:id="@+id/gradientButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
         android:text="@string/gradient_button"
         app:layout_constraintBottom_toTopOf="@+id/counterButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,8 +19,10 @@
 
     <Button
         android:id="@+id/counterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
         android:text="@string/counter_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
