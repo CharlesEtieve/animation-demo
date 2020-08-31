@@ -4,6 +4,7 @@
     <string name="reset">Reset</string>
     <string name="set_number">Set number</string>
     <string name="counter_popup_message">Which number would you like to start rolling ?</string>
+    <string name="counter_popup_textfield_place_holder">0–999</string>
     <string name="gradient_button">Gradient animation</string>
     <string name="counter_button">Counter animation</string>
 </resources>
