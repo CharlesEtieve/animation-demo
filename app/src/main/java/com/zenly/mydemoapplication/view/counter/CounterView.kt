@@ -107,16 +107,11 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
                 parent,
                 false
             ) as ViewGroup
-            itemView.textViewCellNumber0.textSize = textSize
-            itemView.textViewCellNumber1.textSize = textSize
-            itemView.textViewCellNumber2.textSize = textSize
             return NumberViewHolder(itemView)
         }
 
         override fun onBindViewHolder(holder: NumberViewHolder, position: Int) {
-            holder.itemView.textViewCellNumber0.text = dataSet[position][0].toString()
-            holder.itemView.textViewCellNumber1.text = dataSet[position][1].toString()
-            holder.itemView.textViewCellNumber2.text = dataSet[position][2].toString()
+            holder.itemView.textViewCellNumber.text = dataSet[position]
         }
 
         override fun getItemCount(): Int {
