@@ -24,7 +24,7 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
 
     private var state = State.ASK_NUMBER
     private val bag = CompositeDisposable()
-
+    private val rollSize: Int
 
     private enum class State {
         ASK_NUMBER,
@@ -33,6 +33,10 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
 
     init {
         inflate(context, R.layout.fragment_counter, this)
+
+        val a = context.obtainStyledAttributes(attrs, R.styleable.CounterView)
+        rollSize = a.getInt(R.styleable.CounterView_rollSize, DEFAULT_ROLL_SIZE)
+        a.recycle()
 
         //remove the manual scroll of the recyclerview
         counterRecyclerview.addOnItemTouchListener(object : SimpleOnItemTouchListener() {
@@ -67,7 +71,11 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
             State.ROLL -> {
                 state = State.ASK_NUMBER
                 counterButton.text = resources.getString(R.string.reset)
-                counterRecyclerview.layoutManager?.smoothScrollToPosition(counterRecyclerview, RecyclerView.State(), DEFAULT_ROLL_SIZE)
+                counterRecyclerview.layoutManager?.smoothScrollToPosition(
+                    counterRecyclerview,
+                    RecyclerView.State(),
+                    rollSize
+                )
             }
         }
     }
@@ -89,7 +97,7 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
 
     private fun initializeAdapter(number: Int) {
         val dataSet = ArrayList<String>()
-        for (i in number..number + DEFAULT_ROLL_SIZE) {
+        for (i in number..number + rollSize) {
             val numberInRange = (i%1000) // 0 - 999 range
             val formattedLabel = String.format("%03d", numberInRange) //add leading zeros
             dataSet.add(formattedLabel)
@@ -120,7 +128,7 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
     }
 
     companion object {
-        const val DEFAULT_ROLL_SIZE = 50
+        const val DEFAULT_ROLL_SIZE = 42
     }
 
 }
