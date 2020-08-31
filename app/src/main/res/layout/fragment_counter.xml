@@ -13,6 +13,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:layout_marginStart="@dimen/horizontal_margin"
         app:layoutManager="LinearLayoutManager"
         android:overScrollMode="never" />
 

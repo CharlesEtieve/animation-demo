@@ -7,10 +7,41 @@
 
     <com.zenly.mydemoapplication.view.counter.CounterView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/horizontalGuideline"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <com.zenly.mydemoapplication.view.counter.CounterView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toStartOf="@id/verticalGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/horizontalGuideline"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.zenly.mydemoapplication.view.counter.CounterView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/verticalGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/horizontalGuideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="30dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
