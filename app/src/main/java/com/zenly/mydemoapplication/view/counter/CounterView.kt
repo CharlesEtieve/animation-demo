@@ -17,15 +17,14 @@ import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.android.synthetic.main.cell_number.view.*
 import kotlinx.android.synthetic.main.edit_text_counter.view.*
 import kotlinx.android.synthetic.main.fragment_counter.view.*
-import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
 
 
 class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
 
-   private val defaultSpeed = 3000000
     private var state = State.ASK_NUMBER
     private val bag = CompositeDisposable()
+
 
     private enum class State {
         ASK_NUMBER,
@@ -47,7 +46,7 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
         super.onAttachedToWindow()
         RxView
             .clicks(counterButton)
-            .throttleFirst(1000, TimeUnit.MILLISECONDS)
+            .throttleFirst(1, TimeUnit.SECONDS)
             .to { RxJavaBridge.toV3Observable(it) }
             .subscribe {
                 handleButtonClicked()
@@ -68,7 +67,7 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
             State.ROLL -> {
                 state = State.ASK_NUMBER
                 counterButton.text = resources.getString(R.string.reset)
-                counterRecyclerview.fling(0, defaultSpeed)
+                counterRecyclerview.layoutManager?.smoothScrollToPosition(counterRecyclerview, RecyclerView.State(), DEFAULT_ROLL_SIZE)
             }
         }
     }
@@ -90,17 +89,16 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
 
     private fun initializeAdapter(number: Int) {
         val dataSet = ArrayList<String>()
-        for (i in number..number+12) {
+        for (i in number..number + DEFAULT_ROLL_SIZE) {
             val numberInRange = (i%1000) // 0 - 999 range
             val formattedLabel = String.format("%03d", numberInRange) //add leading zeros
             dataSet.add(formattedLabel)
         }
-        val textSize = (height/10).toFloat()
-        val adapter = NumberAdapter(dataSet, textSize)
+        val adapter = NumberAdapter(dataSet)
         counterRecyclerview.adapter = adapter
     }
 
-    private class NumberAdapter(var dataSet: List<String>, val textSize: Float): RecyclerView.Adapter<NumberAdapter.NumberViewHolder>() {
+    private class NumberAdapter(var dataSet: List<String>): RecyclerView.Adapter<NumberAdapter.NumberViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberViewHolder {
             val itemView = LayoutInflater.from(parent.context).inflate(
                 R.layout.cell_number,
@@ -119,6 +117,10 @@ class CounterView(context: Context, attrs: AttributeSet): LinearLayout(context, 
         }
 
         class NumberViewHolder(viewGroup: ViewGroup) : RecyclerView.ViewHolder(viewGroup)
+    }
+
+    companion object {
+        const val DEFAULT_ROLL_SIZE = 50
     }
 
 }
